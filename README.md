@@ -33,3 +33,7 @@ CREATE TABLE project
     raw_1 VARCHAR(255),
     raw_2 INT (100)
 )
+
+# Run
+
+nodemon run
