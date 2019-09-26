@@ -20,6 +20,11 @@ const conn = mysql.createConnection({
   database: 'dbname'
 });
  
+//Server listening
+app.listen(3000,() =>{
+  console.log('We are 3000');
+});
+
 //connect to database
 conn.connect((err) =>{
   if(err) throw err;
@@ -70,9 +75,4 @@ app.delete('/api/projects/:id',(req, res) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
-});
- 
-//Server listening
-app.listen(3000,() =>{
-  console.log('We are 3000');
 });
