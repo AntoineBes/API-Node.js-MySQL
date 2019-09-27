@@ -76,3 +76,26 @@ app.delete('/api/projects/:id',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+
+// Users
+
+app.post('/api/login',(req, res) => {
+  let sql = "SELECT token, email, role, password FROM users WHERE email = '"+req.body.email+"'";
+  let query = conn.query(sql, (err, results) => {
+      if(err) throw err;
+      res.send(JSON.stringify(results));
+});
+});
+
+const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+app.post('/api/register', async(req, res) => {
+  let data = {login: req.body.login, password: req.body.password, email: req.body.email, 
+    token: token, role: "ROLE_USER"};
+  let sql = "INSERT INTO users SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+})
+});
