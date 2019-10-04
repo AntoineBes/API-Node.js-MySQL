@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const mysql = require('mysql');
- 
+
 // parse application/json
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
@@ -21,8 +21,8 @@ const conn = mysql.createConnection({
 });
  
 //Server listening
-app.listen(3000,() =>{
-  console.log('We are 3000');
+app.listen(4000,() =>{
+  console.log('We are 4000');
 });
 
 //connect to database
@@ -36,7 +36,7 @@ app.get('/api/projects',(req, res) => {
   let sql = "SELECT * FROM project";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify(results, console.log(query)));
+    res.send(JSON.stringify(results));
   });
 });
  
@@ -45,7 +45,7 @@ app.get('/api/projects/:id',(req, res) => {
   let sql = "SELECT * FROM project WHERE id="+req.params.id;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify(results, console.log(req.params.id)));
+    res.send(JSON.stringify(results));
   });
 });
  
@@ -55,7 +55,7 @@ app.post('/api/projects',(req, res) => {
   let sql = "INSERT INTO project SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify(console.log(query.sql, data), results));
+    res.send(JSON.stringify(results));
   });
 });
  
@@ -64,7 +64,7 @@ app.put('/api/projects/:id',(req, res) => {
   let sql = "UPDATE project SET raw_1='"+req.body.raw_1+"', raw_2='"+req.body.raw_2+"' WHERE id="+req.params.id;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify(results, console.log(query.sql)));
+    res.send(JSON.stringify(results));
   });
 });
  
@@ -88,11 +88,9 @@ app.post('/api/login',(req, res) => {
 });
 });
 
-const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-app.post('/api/register', async(req, res) => {
-  let data = {login: req.body.login, password: req.body.password, email: req.body.email, 
-    token: token, role: "ROLE_USER"};
+app.post('/api/register', (req, res) => {
+  let data = {password: req.body.password, email: req.body.email, 
+    token: req.body.token, role: "ROLE_USER"};
   let sql = "INSERT INTO users SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
